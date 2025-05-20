@@ -1,0 +1,15 @@
+{
+  "name": "selenium",
+  "version": "1.0.0",
+  "description": "This test ",
+  "license": "ISC",
+  "author": "Ethan",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "selenium-webdriver": "^4.32.0"
+  }
+}
