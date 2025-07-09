@@ -84,47 +84,23 @@ async function Testrun() {
     await waitAndFill(driver, "//input[@formcontrolname='phone']", faker.phone.number("04########"));
     await waitAndFill(driver, "//input[@formcontrolname='email']", faker.internet.email());
     await waitAndFill(driver, "//input[@formcontrolname='password']", "qweqwe");
-    await waitAndFill(driver, "//textarea[@formcontrolname='notes']", faker.lorem.sentence());
+    await waitAndFill(driver, "//textarea[@formcontrolname='notes'][1]", faker.lorem.sentence());
 
-    // === Add Applicant 2 ===
-    const addApplicantBtn = await waitAndFill(driver, "//button[contains(., 'Add More Applicant')]", null, false);
-    await driver.executeScript("arguments[0].scrollIntoView(true);", addApplicantBtn);
-    await driver.sleep(700);
+    await waitAndFill(driver, "//button[normalize-space(text())='SAVE & CONTINUE']", null, false);
+   
 
-    await driver.wait(until.elementLocated(By.xpath("(//input[@formcontrolname='name'])[3]")), 15000);
-
-    await waitAndFill(driver, "(//input[@formcontrolname='name'])[3]", faker.name.fullName());
-
-    const gender2 = genderOptions[Math.floor(Math.random() * genderOptions.length)];
-    await waitAndFill(driver, `(//select[@formcontrolname='gender'])[2]/option[@value='${gender2}']`, null, false);
-
-   const dobInput2 = await waitAndFill(driver, "(//input[@formcontrolname='dob'])[2]", null, false);
-await driver.sleep(1000);
-
-
-  await driver.wait(until.elementLocated(By.xpath("//div[contains(@class, 'btn-light') and text()='16']")), 15000);
-    const dobDay2 = await driver.findElement(By.xpath("//div[contains(@class, 'btn-light') and text()='16']"));
-     await dobDay2.click();
-       // === Click Update ===
-    await driver.wait(until.elementLocated(By.xpath("//button[contains(text(),'SAVE & CONTINUE')]")), 10000);
-    await driver.findElement(By.xpath("//button[contains(text(),'SAVE & CONTINUE')]")).click();
-
-
-await driver.sleep(700);
-
-    await waitAndFill(driver, "(//input[@formcontrolname='phone'])[2]", faker.phone.number("04########"));
-    await waitAndFill(driver, "(//input[@formcontrolname='email'])[2]", faker.internet.email());
-    await waitAndFill(driver, "(//input[@formcontrolname='password'])[2]", "qweqwe");
-    await waitAndFill(driver, "(//input[@formcontrolname='creditScore'])[1]", faker.datatype.number({ min: 300, max: 850 }).toString());
-    await waitAndFill(driver, "(//input[@formcontrolname='savingAmount'])[2]", faker.datatype.number({ min: 1000, max: 100000 }).toString());
-    await waitAndFill(driver, "(//input[@formcontrolname='approximateSavingAmountPerYear'])[1]", faker.datatype.number({ min: 2000, max: 200000 }).toString());
-    await waitAndFill(driver, "(//input[@formcontrolname='superannuationAmount'])[1]", faker.datatype.number({ min: 5000, max: 300000 }).toString());
-    await waitAndFill(driver, "(//textarea[@formcontrolname='notes'])[2]", faker.lorem.sentence());
+  //Property Information
+  const isMortgageValue = faker.datatype.boolean() ? "0: true" : "1: false";
+  await waitAndFill(driver, "//select[@formcontrolname='isMortgage']/option[@value='" + isMortgageValue + "']", null, false);
 
   
+  await waitAndFill(driver, "//button[contains(@class, 'shift-manager-actions__button') and contains(@class, 'section-toggle-button')])[1]", null, false);
+
+
+
 
     // Final wait to let submission complete
-    await driver.sleep(5000);
+    await driver.sleep(1000);
   } catch (err) {
     console.error("❌ Error during test run:", err.message, err.stack);
   } finally {
