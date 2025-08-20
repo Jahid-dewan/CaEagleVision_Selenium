@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Builder, By, Browser, until } from "selenium-webdriver";
+import { Builder, By, Browser, until, Key } from "selenium-webdriver";
 import { faker } from "@faker-js/faker";
 
 const email = "root@ca.com";
@@ -90,14 +90,53 @@ async function Testrun() {
    
 
   //Property Information
-  const isMortgageValue = faker.datatype.boolean() ? "0: true" : "1: false";
-  await waitAndFill(driver, "//select[@formcontrolname='isMortgage']/option[@value='" + isMortgageValue + "']", null, false);
+await driver.findElement(By.xpath("(//button[contains(@class, 'shift-manager-actions__button')])[2]")).click();
 
-  
-  await waitAndFill(driver, "//button[contains(@class, 'shift-manager-actions__button') and contains(@class, 'section-toggle-button')])[1]", null, false);
+// select "No"
+await driver.findElement(By.name("isMortgage")).sendKeys("No");
+await driver.findElement(By.xpath("//select[@formcontrolname='isSuperProperty']")).sendKeys("No");
+await driver.findElement(By.name("propertyName")).sendKeys("Winter House");
 
+//Property Address
+await driver.findElement(By.xpath("//input[@formcontrolname='address']")).sendKeys("12 Brierly St, Dalgety NSW 2628, Australia");
+ await driver.sleep(1000); // wait for suggestions
+await driver.actions().sendKeys(Key.ARROW_DOWN, Key.ENTER).perform();
+ await driver.sleep(1000);
+// Fill property details
+const ownerOccupiedOption = await driver.wait(until.elementLocated(By.css('select[formcontrolname="ownerOccupiedOrInvestment"] option[value="1: true"]')),5000
+);
+await ownerOccupiedOption.click();
 
+// Fill Property Purchase Price 
+const priceInput = await driver.wait(
+    until.elementLocated(By.css('input[formcontrolname="propertyPurchasePrice"]')),
+    5000
+);
+await priceInput.clear();
+await priceInput.sendKeys('100000');
 
+// Fill Growth Rate (hard-coded)
+const growthInput = await driver.wait(
+    until.elementLocated(By.css('input[formcontrolname="growthRate"]')),
+    5000
+);
+await growthInput.clear();
+await growthInput.sendKeys('5');
+
+// Click Update button
+// Locate the Update button inside the specific div
+const updateButton = await driver.wait(
+    until.elementLocated(By.xpath("//div[@class='text-right py-3']/button[normalize-space(text())='Update']")),
+    5000
+);
+
+// Scroll into view
+await driver.executeScript("arguments[0].scrollIntoView(true);", updateButton);
+
+// Click using JavaScript
+    await driver.sleep(5000);
+
+await driver.executeScript("arguments[0].click();", updateButton);
 
     // Final wait to let submission complete
     await driver.sleep(1000);

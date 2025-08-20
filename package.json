@@ -13,5 +13,10 @@
     "@faker-js/faker": "^7.6.0",
     "chromedriver": "^136.0.2",
     "selenium-webdriver": "^4.32.0"
+  },
+  "devDependencies": {
+    "mocha": "^11.7.1",
+    "mocha-allure-reporter": "^1.4.0",
+    "mochawesome": "^7.1.3"
   }
 }
